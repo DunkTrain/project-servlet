@@ -44,6 +44,21 @@ public class LogicServlet extends HttpServlet {
         resp.sendRedirect("/index.jsp");
     }
 
+    private boolean checkWin(HttpServletResponse response, HttpSession currentSession, Field field) throws IOException {
+        Sign winner = field.checkWin();
+        if (Sign.CROSS == winner || Sign.NOUGHT == winner) {
+            currentSession.setAttribute("winner", winner);
+
+            List<Sign> data = field.getFieldData();
+
+            currentSession.setAttribute("data", data);
+
+            response.sendRedirect("/index.jsp");
+            return true;
+        }
+        return false;
+    }
+
 
     private int getSelectedIndex(HttpServletRequest request) {
         String click = request.getParameter("click");
